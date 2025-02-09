@@ -1,0 +1,27 @@
+name: AWS S3 access using OIDC Authentication
+
+on:
+  push:
+    branches:
+      - GHA-access-aws-using-OIDC-and-role
+
+permissions:
+  id-token: write   # Required for OIDC
+  contents: read
+
+jobs:
+  aws-auth:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::863559598543:role/GitHubActionsOIDC
+          aws-region: us-west-1
+
+      - name: List S3 Buckets
+        run: aws s3 ls
