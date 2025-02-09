@@ -1,0 +1,26 @@
+name: List S3 Buckets
+
+on:
+  workflow_dispatch:  # Allows manual trigger
+  push:
+    branches:
+      - gh-testing-branch  # Change this as needed
+
+jobs:
+  list-s3:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-west-1  # Adjust the region as needed
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Verify AWS Environment Variables
+        run: env | grep AWS  # Optional: Check if env vars are set
+
+      - name: List S3 Buckets
+        run: aws s3 ls
