@@ -17,4 +17,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Hello Message
-        run: echo "Hello ${{ github.event.inputs.word || 'World' }}"
+        run: echo "Hello ${{ github.event.inputs.word }}"
