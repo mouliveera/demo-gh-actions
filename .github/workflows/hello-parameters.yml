@@ -2,18 +2,19 @@ name: Hello Workflow
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - demo-action-with-parameters
     inputs:
       word:
         description: 'Word to replace {WORD}'
         required: true
         default: 'World'
 
+  push:
+    branches:
+      - demo-action-with-parameters
+
 jobs:
   say-hello:
     runs-on: ubuntu-latest
     steps:
       - name: Print Hello Message
-        run: echo "Hello ${{ github.event.inputs.word }}"
+        run: echo "Hello ${{ github.event.inputs.word || 'World' }}"
