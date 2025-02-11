@@ -4,13 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       word:
-        description: 'Word to replace {WORD}'
-        required: true
-        default: 'World'
-
-  push:
-    branches:
-      - demo-action-with-parameters
+        description: "Print the word"
+        required: false
+        default: "world"
 
 jobs:
   say-hello:
