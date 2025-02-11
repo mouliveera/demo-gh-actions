@@ -2,6 +2,9 @@ name: Hello Workflow
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - demo-action-with-parameters
     inputs:
       word:
         description: 'Word to replace {WORD}'
