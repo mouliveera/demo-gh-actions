@@ -1,0 +1,16 @@
+name: Hello Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      word:
+        description: "Print the word"
+        required: false
+        default: "world"
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello Message
+        run: echo "Hello ${{ github.event.inputs.word }}"
