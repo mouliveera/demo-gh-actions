@@ -3,7 +3,7 @@ name: Print Repository Variable
 on:
   push:
     branches:
-      - variabeltesting  # Change to your desired branch
+      - variabeltesting  # Make sure this branch exists
 
 jobs:
   print-variable:
@@ -12,5 +12,5 @@ jobs:
       - name: Print GitHub Repo Variable
         shell: bash
         env:
-          NAME: ${{ vars.NAME }}
+          NAME: "${{ vars.NAME }}"  # Ensure variable is correctly formatted
         run: echo "The value of NAME is: $NAME"
