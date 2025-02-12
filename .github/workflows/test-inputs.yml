@@ -1,0 +1,112 @@
+name: Deploy Astronomer Release Container
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - testInputs
+    inputs:
+      AppId:
+        description: 'PlanIT application ID number, excludes APP- (ex. "4853")'
+        required: true
+        default: '0'
+        type: string
+      VpcId:
+        description: 'VPC to provision the pipeline'
+        required: true
+        type: string
+      RepositoryName:
+        description: 'GitHub Enterprise repository name (ex. "HIG/ds_mlops_core_dags")'
+        required: true
+        type: string
+      BranchName:
+        description: 'GitHub Enterprise branch name'
+        required: true
+        type: string
+      ReleaseName:
+        description: 'Release Name Of Astro Deployment'
+        required: true
+        type: string
+      AirflowVersion:
+        description: 'Version tag of Airflow. For example 2.4.3-2'
+        required: true
+        type: string
+      AirflowRepo:
+        description: 'Airflow run type - OS or managed'
+        required: true
+        default: 'ap-airflow'
+        type: string
+        options:
+          - ap-airflow
+          - astro-runtime
+      AWSRegion:
+        description: 'AWS Region to determine the correct Nexus secret'
+        required: true
+        type: string
+        options:
+          - us-east-1
+          - us-east-2
+          - eu-west-2
+      TimeoutInMinutes:
+        description: 'Build timeout in minutes'
+        required: true
+        default: '10'
+        type: number
+        min: 5
+        max: 480
+      DataClassification:
+        description: 'Data classification for the application'
+        required: true
+        default: 'NonConfidential'
+        type: string
+        options:
+          - NonConfidential
+          - CompanyConfidential
+          - HighlyRestricted
+      StackNameSuffix:
+        description: 'Optional suffix of the output stack name to become APP-AppId-StageName-StackNameSuffix; empty string will produce APP-AppId-StageName'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    env:
+      APP_ID: ${{ github.event.inputs.AppId }}
+      VPC_ID: ${{ github.event.inputs.VpcId }}
+      REPOSITORY_NAME: ${{ github.event.inputs.RepositoryName }}
+      BRANCH_NAME: ${{ github.event.inputs.BranchName }}
+      RELEASE_NAME: ${{ github.event.inputs.ReleaseName }}
+      AIRFLOW_VERSION: ${{ github.event.inputs.AirflowVersion }}
+      AIRFLOW_REPO: ${{ github.event.inputs.AirflowRepo }}
+      AWS_REGION: ${{ github.event.inputs.AWSRegion }}
+      TIMEOUT_IN_MINUTES: ${{ github.event.inputs.TimeoutInMinutes }}
+      DATA_CLASSIFICATION: ${{ github.event.inputs.DataClassification }}
+      STACK_NAME_SUFFIX: ${{ github.event.inputs.StackNameSuffix }}
+    steps:
+      - name: Ask for Inputs and Print
+        run: |
+          read -p "Enter AppId: " APP_ID
+          read -p "Enter VpcId: " VPC_ID
+          read -p "Enter RepositoryName: " REPOSITORY_NAME
+          read -p "Enter BranchName: " BRANCH_NAME
+          read -p "Enter ReleaseName: " RELEASE_NAME
+          read -p "Enter AirflowVersion: " AIRFLOW_VERSION
+          read -p "Enter AirflowRepo: " AIRFLOW_REPO
+          read -p "Enter AWSRegion: " AWS_REGION
+          read -p "Enter TimeoutInMinutes: " TIMEOUT_IN_MINUTES
+          read -p "Enter DataClassification: " DATA_CLASSIFICATION
+          read -p "Enter StackNameSuffix: " STACK_NAME_SUFFIX
+
+          echo "AppId: $APP_ID"
+          echo "VpcId: $VPC_ID"
+          echo "RepositoryName: $REPOSITORY_NAME"
+          echo "BranchName: $BRANCH_NAME"
+          echo "ReleaseName: $RELEASE_NAME"
+          echo "AirflowVersion: $AIRFLOW_VERSION"
+          echo "AirflowRepo: $AIRFLOW_REPO"
+          echo "AWSRegion: $AWS_REGION"
+          echo "TimeoutInMinutes: $TIMEOUT_IN_MINUTES"
+          echo "DataClassification: $DATA_CLASSIFICATION"
+          echo "StackNameSuffix: $STACK_NAME_SUFFIX"
