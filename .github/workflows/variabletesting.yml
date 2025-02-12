@@ -1,0 +1,16 @@
+name: Print Repository Variable
+
+on:
+  push:
+    branches:
+      - variabeltesting  # Change to your desired branch
+
+jobs:
+  print-variable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print GitHub Repo Variable
+        shell: bash
+        env:
+          NAME: ${{ vars.NAME }}
+        run: echo "The value of NAME is: $NAME"
