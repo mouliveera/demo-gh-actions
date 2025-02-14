@@ -9,10 +9,11 @@ on:
       AppId:
         description: "PlanIT application ID (excludes APP-)"
         required: true
-        default: "0"
+        default: "mouliAppID"
       VpcId:
         description: "VPC ID for provisioning"
         required: true
+        default: "MouliVpC123"
 
 jobs:
   print-values:
