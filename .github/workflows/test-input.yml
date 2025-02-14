@@ -1,26 +1,26 @@
-name: Print CloudFormation Parameters
+name: Mixed inputs
 
 on:
-  push:
-    branches:
-      - astro-test.yml
   workflow_dispatch:
     inputs:
-      AppId:
-        description: "PlanIT application ID (excludes APP-)"
+      name:
+        type: choice
+        description: Who to greet
+        options: 
+        - monalisa
+        - cschleiden
+      message:
         required: true
-        default: "mouliAppID"
-      VpcId:
-        description: "VPC ID for provisioning"
-        required: true
-        default: "MouliVpC123"
+      use-emoji:
+        type: boolean
+        description: Include 🎉🤣 emojis
+      environment:
+        type: environment
 
 jobs:
-  print-values:
+  greet:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Inputs
-        run: |
-          echo "AppId: ${{ github.event.inputs.AppId }}"
-          echo "VpcId: ${{ github.event.inputs.VpcId }}"
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", "🥳"]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
