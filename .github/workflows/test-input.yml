@@ -1,0 +1,25 @@
+name: Print CloudFormation Parameters
+
+on:
+  push:
+    branches:
+      - astro-test.yml
+  workflow_dispatch:
+    inputs:
+      AppId:
+        description: "PlanIT application ID (excludes APP-)"
+        required: true
+        default: "0"
+      VpcId:
+        description: "VPC ID for provisioning"
+        required: true
+
+jobs:
+  print-values:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Inputs
+        run: |
+          echo "AppId: ${{ github.event.inputs.AppId }}"
+          echo "VpcId: ${{ github.event.inputs.VpcId }}"
